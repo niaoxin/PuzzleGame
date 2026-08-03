@@ -1,8 +1,12 @@
 package ui;
 
 import javax.swing.*;
+import java.util.Random;
 
 public class GameJFame extends JFrame {
+
+    //打乱后的数据数组
+    int[][] date = new int[4][4];
 
     public GameJFame(){
         //初始化界面
@@ -11,6 +15,9 @@ public class GameJFame extends JFrame {
         //初始化菜单
         initJMenuBar();
 
+        //初始化数据(打乱数据)
+        initDate();
+
         //初始化图片
         initImage();
 
@@ -18,14 +25,43 @@ public class GameJFame extends JFrame {
         this.setVisible(true);
     }
 
+    private void initDate() {
+        //创造一维数组打乱
+        int[] tempArr = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+
+        //打乱一维数组
+        for (int i = 0; i < tempArr.length; i++) {
+            Random random = new Random();
+            int tempIndex = random.nextInt(0,16);
+            int temp = tempArr[i];
+            tempArr[i] = tempArr[tempIndex];
+            tempArr[tempIndex] = temp;
+        }
+
+        //将一维数组放入二维数组中
+        int index = 0;
+        for (int i = 0; i < date.length; i++) {
+            for(int j = 0; j <date[i].length; j++){
+                date[i][j] = tempArr[index];
+                index++;
+            }
+        }
+    }
+
     private void initImage() {
+        //双重循环将图片添加
+        int count = 0;
+        for(int i = 0;i < 4;i++){
+            for(int j = 0;j < 4 ;j++){
+                //创造Imageicon同时创造JLaber管理容器，存放ImageIcon对象
+                JLabel jLabel = new JLabel(new ImageIcon("D:\\JAVA\\project\\006\\image\\animal\\animal3\\"+date[i][j]+".jpg"));
+                jLabel.setBounds(j * 105,i * 105,105,105);
+                //将管理容器放入主界面
+                this.getContentPane().add(jLabel);
+                //count自增改变图片
+            }
+        }
 
-        //创造图片ImageIcon对象
-        ImageIcon icon = new ImageIcon("D:\\JAVA\\project\\006\\image\\animal\\animal3\\3.jpg");
-        //创造JLaber容器，存放ImageIcon对象
-        JLabel jLabel = new JLabel(icon);
-
-        this.add(jLabel);
 
     }
 
@@ -69,6 +105,8 @@ public class GameJFame extends JFrame {
         this.setAlwaysOnTop(true);
         //设置画面保持居中
         this.setLocationRelativeTo(null);
+        //关闭默认居中摆放
+        this.setLayout(null);
         //设置画面关闭模式
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
