@@ -1,6 +1,7 @@
 package ui;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.util.Random;
 
 public class GameJFame extends JFrame {
@@ -55,14 +56,19 @@ public class GameJFame extends JFrame {
             for(int j = 0;j < 4 ;j++){
                 //创造Imageicon同时创造JLaber管理容器，存放ImageIcon对象
                 JLabel jLabel = new JLabel(new ImageIcon("D:\\JAVA\\project\\006\\image\\animal\\animal3\\"+date[i][j]+".jpg"));
-                jLabel.setBounds(j * 105,i * 105,105,105);
+                jLabel.setBounds(j * 105 + 83,i * 105 + 134,105,105);
+                //给每个图片添加边框
+                jLabel.setBorder(new BevelBorder(1));
                 //将管理容器放入主界面
                 this.getContentPane().add(jLabel);
-                //count自增改变图片
             }
         }
 
-
+        //先添加的图片在上方，所以此处背景图片要后添加
+        //添加背景图片
+        JLabel background = new JLabel(new ImageIcon("D:\\JAVA\\project\\006\\image\\background.png"));
+        background.setBounds(40,40,508,560);
+        this.getContentPane().add(background);
     }
 
 
