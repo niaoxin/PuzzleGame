@@ -2,11 +2,10 @@ package ui;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.Random;
 
-public class GameJFame extends JFrame implements KeyListener {
+public class GameJFame extends JFrame implements KeyListener , ActionListener {
 
     //打乱后的数据数组
     int[][] date = new int[4][4];
@@ -16,6 +15,8 @@ public class GameJFame extends JFrame implements KeyListener {
     int[][] win = {{1,2,3,4},{5,6,7,8},{9,10,11,12},{13,14,15,0}};
 
     String path = "image\\animal\\animal3\\";
+    //游玩步数
+    int step = 0;
 
     public GameJFame(){
         //初始化界面
@@ -74,6 +75,11 @@ public class GameJFame extends JFrame implements KeyListener {
             this.getContentPane().add(winjLabel);
         }
 
+        //显示步数文字
+        JLabel stepCount = new JLabel("当前步数为： " + step);
+        stepCount.setBounds(50,30,100,20);
+        this.getContentPane().add(stepCount);
+
         //双重循环将图片添加
         int count = 0;
         for(int i = 0;i < 4;i++){
@@ -108,13 +114,117 @@ public class GameJFame extends JFrame implements KeyListener {
         JMenu aboutJMenu = new JMenu("关于我们");
 
         //每个选项下的菜单
+        JMenu replaceImage = new JMenu("更换图片");
+        JMenuItem anmimalImage = new JMenuItem("动物");
+        JMenuItem girlImage = new JMenuItem("女孩");
+        JMenuItem sportImage = new JMenuItem("运动");
+
         JMenuItem replayItem = new JMenuItem("重新游戏");
         JMenuItem reloginItem = new JMenuItem("重新登录");
         JMenuItem closeItem = new JMenuItem("关闭游戏");
 
         JMenuItem accountItem = new JMenuItem("公众号");
 
+        //每个选项下的菜单去绑定一个事件
+        replayItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //步数清零
+                step = 0;
+                //重新打乱数据
+                initDate();
+                //重新加载图片
+                initImage();
+            }
+        });
+        reloginItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //关闭GameJFaem界面
+                setVisible(false);
+                //打开登录界面
+                new LoginJFame();
+            }
+        });
+        closeItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        accountItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //创造一个弹窗对象
+                JDialog jDialog = new JDialog();
+                //创造图片
+                JLabel jLabel = new JLabel(new ImageIcon("image\\about.png"));
+                //设置图片相对于弹窗的位置
+                jLabel.setBounds(0,0,258,258);
+                //将图片添加到弹窗中
+                jDialog.getContentPane().add(jLabel);
+                //给弹窗设置大小
+                jDialog.setSize(344,344);
+                //弹窗居中
+                jDialog.setLocationRelativeTo(null);
+                //保持置顶
+                jDialog.setAlwaysOnTop(true);
+                //弹窗不关闭无法操作其他
+                jDialog.setModal(true);
+                //弹窗显示出来
+                jDialog.setVisible(true);
+            }
+        });
+        //三个更换图片功能
+        anmimalImage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //步数清零
+                step = 0;
+                //修改路径,随机图片
+                Random animal = new Random();
+                path = "image\\animal\\animal"+animal.nextInt(1,9)+"\\";
+                //重新打乱数据
+                initDate();
+                //重新加载图片
+                initImage();
+            }
+        });
+        girlImage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //步数清零
+                step = 0;
+                //修改路径,随机图片
+                Random girl = new Random();
+                path = "image\\girl\\girl"+girl.nextInt(1,14)+"\\";
+                //重新打乱数据
+                initDate();
+                //重新加载图片
+                initImage();
+            }
+        });
+        sportImage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //步数清零
+                step = 0;
+                //修改路径,随机图片
+                Random sport = new Random();
+                path = "image\\sport\\sport"+sport.nextInt(1,11)+"\\";
+                //重新打乱数据
+                initDate();
+                //重新加载图片
+                initImage();
+            }
+        });
+
         //每个选项添加菜单
+        replaceImage.add(anmimalImage);
+        replaceImage.add(girlImage);
+        replaceImage.add(sportImage);
+
+        functionJMenu.add(replaceImage);
         functionJMenu.add(replayItem);
         functionJMenu.add(reloginItem);
         functionJMenu.add(closeItem);
@@ -165,6 +275,11 @@ public class GameJFame extends JFrame implements KeyListener {
             //清除图片
             this.getContentPane().removeAll();
 
+            //显示步数文字
+            JLabel stepCount = new JLabel("当前步数为： " + step);
+            stepCount.setBounds(50,30,100,20);
+            this.getContentPane().add(stepCount);
+
             //添加完整图片
             JLabel jLabel = new JLabel(new ImageIcon(path + "all.jpg"));
             jLabel.setBounds(83,134,420,420);
@@ -196,6 +311,7 @@ public class GameJFame extends JFrame implements KeyListener {
                 date[nullx][nully] = date[nullx][nully-1];
                 date[nullx][nully-1] = 0;
                 nully = nully - 1;
+                step++;
                 initImage();
             }
         }else if(code == 38){
@@ -203,6 +319,7 @@ public class GameJFame extends JFrame implements KeyListener {
                 date[nullx][nully] = date[nullx-1][nully];
                 date[nullx-1][nully] = 0;
                 nullx = nullx - 1;
+                step++;
                 initImage();
             }
         }else if(code == 39){
@@ -210,6 +327,7 @@ public class GameJFame extends JFrame implements KeyListener {
                 date[nullx][nully] = date[nullx][nully+1];
                 date[nullx][nully+1] = 0;
                 nully = nully + 1;
+                step++;
                 initImage();
             }
         }else if(code == 40){
@@ -217,6 +335,7 @@ public class GameJFame extends JFrame implements KeyListener {
                 date[nullx][nully] = date[nullx+1][nully];
                 date[nullx+1][nully] = 0;
                 nullx = nullx + 1;
+                step++;
                 initImage();
             }
         }else if(code == 65){
@@ -275,5 +394,11 @@ public class GameJFame extends JFrame implements KeyListener {
             }
         }
         return true;
+    }
+
+    //重写action监控
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }
