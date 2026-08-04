@@ -1,10 +1,11 @@
 import ui.GameJFame;
+import ui.LoginJFame;
 
 public class APP {
     static void main() {
 
-
-        new GameJFame();
+        new LoginJFame();
+       // new GameJFame();
 
     }
 }
