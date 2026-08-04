@@ -13,6 +13,8 @@ public class LoginJFame extends JFrame implements MouseListener {
 
     //随机验证码
     String CodeCode = RandomCode();
+    String user = "niaoxin";
+    String possworduser = "147258369";
 
     public LoginJFame(){
         //初始化界面
@@ -102,6 +104,11 @@ public class LoginJFame extends JFrame implements MouseListener {
             @Override
             public void mousePressed(MouseEvent e) {
                 loginbutton.setIcon(new ImageIcon("image\\login\\登录按下.png"));
+                if(user.equals(usetname.getText()) && possworduser.equals(new String(userpassword.getPassword())) &&
+                usercode.getText().equalsIgnoreCase(CodeCode)){
+                    new GameJFame();
+                    setVisible(false);
+                }
             }
 
             @Override
@@ -133,6 +140,8 @@ public class LoginJFame extends JFrame implements MouseListener {
             @Override
             public void mousePressed(MouseEvent e) {
                 registerbutton.setIcon(new ImageIcon("image\\login\\注册按下.png"));
+                new RegisterJFame();
+                setVisible(false);
             }
 
             @Override
